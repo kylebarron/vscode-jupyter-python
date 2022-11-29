@@ -55,26 +55,31 @@
     "ms-toolsai.jupyter"
   ],
   "scripts": {
-    "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
-    "test": "npm run compile && node ./node_modules/vscode/bin/test",
-    "postinstall": "npm run download-api",
     "download-api": "vscode-dts dev",
-    "postdownload-api": "vscode-dts main"
+    "lint": "eslint \"src/**/*.ts\"",
+    "postdownload-api": "vscode-dts main",
+    "postinstall": "npm run download-api",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/run-test.js",
+    "vscode:prepublish": "npm run compile",
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
-    "@types/mocha": "^2.2.42",
-    "mocha": "^3.5.0",
-    "yo": "^4.3.1",
-    "vscode-dts": "^0.3.2",
+    "@types/glob": "^7.1.1",
+    "@types/mocha": "^5.2.6",
     "@types/node": "^16.11.7",
-    "@types/vscode": "^1.73.1",
+    "@types/vscode": "^1.71.0",
     "@typescript-eslint/eslint-plugin": "^5.42.0",
     "@typescript-eslint/parser": "^5.42.0",
+    "@vscode/test-electron": "^1.6.1",
     "eslint": "^8.26.0",
-    "typescript": "^4.8.4"
+    "glob": "^7.1.4",
+    "mocha": "^6.1.4",
+    "source-map-support": "^0.5.12",
+    "typescript": "^4.8.4",
+    "vscode-dts": "^0.3.2",
+    "yo": "^4.3.1"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

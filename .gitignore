@@ -4,3 +4,4 @@ node_modules
 *.vsix
 *.js
 *.js.map
+vscode.d.ts
