@@ -1,8 +1,8 @@
 {
   "name": "vscode-jupyter-python",
   "displayName": "vscode-jupyter-python",
-  "description": "Python-specific Jupyter VSCode plugin based on https://github.com/nikitakit/hydrogen-python",
-  "version": "0.1.0",
+  "description": "Run automatically-inferred Python code blocks in Jupyter.",
+  "version": "0.1.1",
   "publisher": "kylebarron",
   "repository": "https://github.com/kylebarron/vscode-jupyter-python",
   "engines": {

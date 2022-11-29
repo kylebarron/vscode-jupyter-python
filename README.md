@@ -2,9 +2,9 @@
 
 Run automatically-inferred Python code blocks in Jupyter.
 
-In this example, the **only** keyboard shortcut used is <kbd>Cmd</kbd>+<kbd>Enter</kbd>:
+In this example, the **only** keyboard shortcut used is <kbd>Shift</kbd>+<kbd>Enter</kbd>:
 
-https://user-images.githubusercontent.com/15164633/204446417-eb9b260b-d48f-4d00-b313-ec203d84988f.mov
+![](https://user-images.githubusercontent.com/15164633/204451326-5ac2e334-6127-4f00-be93-4d0041405e98.gif)
 
 This is inspired by the [Hydrogen](https://github.com/nteract/hydrogen) and [`hydrogen-python`](https://github.com/nikitakit/hydrogen-python) extensions for [Atom](https://github.com/atom/atom/).
 
