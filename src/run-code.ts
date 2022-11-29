@@ -9,34 +9,49 @@ export function runEntireFile() {
   vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
 }
 
+/**
+ * Run an inferred code block in the IPython kernel
+ */
 export function runInferredCodeBlock(): void {
   const textEditor = vscode.window.activeTextEditor;
-  console.log("textEditor", textEditor);
   if (!textEditor) {
     return;
   }
 
-  const initialCursorPosition = textEditor?.selection.anchor;
-  console.log("initialCursorPosition", initialCursorPosition);
+  _runInferredCodeBlock(textEditor);
+}
 
-  const expandedCodeRange = getExpandedCodeRegion(
-    textEditor,
-    initialCursorPosition
-  );
-  console.log("expandedCodeRange", expandedCodeRange);
+export function runInferredCodeBlockAndMoveDown(): void {
+  const textEditor = vscode.window.activeTextEditor;
+  if (!textEditor) {
+    return;
+  }
 
-  const text = textEditor.document.getText(expandedCodeRange);
-  console.log("text", text);
-  vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
+  const expandedCodeRange = _runInferredCodeBlock(textEditor);
 
-  // TODO: move cursor to end of range
   const endPosition = new Position(expandedCodeRange.end.line + 1, 0);
   const newSelection = new Selection(endPosition, endPosition);
   textEditor.selections = [newSelection];
 }
 
-export function runInferredCodeBlockAndMoveDown(): void {
-  runInferredCodeBlock();
+function _runInferredCodeBlock(textEditor: TextEditor): Range {
+  const initialCursorPosition = movePositionToStartOfLine(
+    textEditor.selection.anchor
+  );
+
+  const expandedCodeRange = getExpandedCodeRegion(
+    textEditor,
+    initialCursorPosition
+  );
+
+  const text = textEditor.document.getText(expandedCodeRange);
+  vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
+
+  return expandedCodeRange;
+}
+
+function movePositionToStartOfLine(position: Position): Position {
+  return position.with(undefined, 0);
 }
 
 function getExpandedCodeRegion(
@@ -44,10 +59,11 @@ function getExpandedCodeRegion(
   initialPosition: Position
 ): Range {
   // Assuming that no text is selected
+  // In practice, initialPosition here is the beginning of a line
   const beginRange = new Range(initialPosition, initialPosition);
   console.log("beginRange", beginRange);
 
-  const initialIndentText = getInitialIndentText(editor, initialPosition);
+  const initialIndentText = getInitialIndentTextAtLine(editor, initialPosition);
   console.log("initialIndentText", initialIndentText);
 
   const finalRange = expandRangeDownward(editor, beginRange, initialIndentText);
@@ -55,7 +71,7 @@ function getExpandedCodeRegion(
   return finalRange;
 }
 
-function getInitialIndentText(
+function getInitialIndentTextAtLine(
   editor: TextEditor,
   initialPosition: Position
 ): string {
@@ -84,18 +100,26 @@ function expandRangeDownward(
   const expandCode = ["\\s"].concat(expandCodeList).join("|");
   const expandRegex = new RegExp(`^(${indent}(${expandCode})|\s*#|\s*$)`);
 
-  let nextLineNum = currentRange.end.line;
+  const whitespaceOnlyRegex = new RegExp("^\\s*$");
+
+  let nextLineNum = currentRange.end.line + 1;
 
   // expand code to the bottom
   while (
-    nextLineNum <= editor.document.lineCount &&
-    document.lineAt(nextLineNum).text.match(expandRegex)
+    nextLineNum < editor.document.lineCount &&
+    (document.lineAt(nextLineNum).text.match(whitespaceOnlyRegex) ||
+      document.lineAt(nextLineNum).text.match(expandRegex))
   ) {
     nextLineNum += 1;
-    console.log("adding a line number");
+    console.log("adding a line number:", nextLineNum);
   }
 
-  const endPosition = document.lineAt(nextLineNum + 1).range.end;
-  return new Range(currentRange.start, endPosition);
+  console.log("nextLineNum", nextLineNum);
+
+  const endPosition = document.lineAt(nextLineNum - 1).range.end;
+  console.log("endPosition", endPosition);
+  const endRange = new Range(currentRange.start, endPosition);
+  console.log("endRange", endRange);
+  return endRange;
 }
 
