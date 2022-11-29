@@ -6,7 +6,7 @@
   "publisher": "kylebarron",
   "repository": "https://github.com/kylebarron/vscode-jupyter-python",
   "engines": {
-    "vscode": "^1.71.0"
+    "vscode": "^1.54.0"
   },
   "license": "MIT",
   "categories": [
