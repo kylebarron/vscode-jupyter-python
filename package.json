@@ -13,14 +13,19 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:vscode-jupyter-python.sayHello"
+    "onCommand:vscode-jupyter-python.run-inferred-block",
+    "onCommand:vscode-jupyter-python.run-inferred-block-and-move-down"
   ],
   "main": "./out/extension",
   "contributes": {
     "commands": [
       {
-        "command": "vscode-jupyter-python.sayHello",
-        "title": "Run python code cell"
+        "command": "vscode-jupyter-python.run-inferred-block",
+        "title": "Run inferred code block"
+      },
+      {
+        "command": "vscode-jupyter-python.run-inferred-block-and-move-down",
+        "title": "Run inferred code block and move down"
       }
     ],
     "configuration": {

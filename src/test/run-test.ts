@@ -1,7 +1,5 @@
 import * as path from 'path';
 
-// @ts-expect-error not sure why ts can't find its types
-// It seems to be missing a types field in package.json?
 import { runTests } from '@vscode/test-electron';
 
 async function main() {

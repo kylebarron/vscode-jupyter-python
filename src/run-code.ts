@@ -9,31 +9,34 @@ export function runEntireFile() {
   vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
 }
 
-export function runInferredCodeBlock() {
+export function runInferredCodeBlock(): void {
   const textEditor = vscode.window.activeTextEditor;
-  console.log('textEditor', textEditor);
+  console.log("textEditor", textEditor);
   if (!textEditor) {
     return;
   }
 
   const initialCursorPosition = textEditor?.selection.anchor;
-  console.log('initialCursorPosition', initialCursorPosition);
+  console.log("initialCursorPosition", initialCursorPosition);
 
   const expandedCodeRange = getExpandedCodeRegion(
     textEditor,
     initialCursorPosition
   );
-  console.log('expandedCodeRange', expandedCodeRange);
+  console.log("expandedCodeRange", expandedCodeRange);
 
   const text = textEditor.document.getText(expandedCodeRange);
-  console.log('text', text);
+  console.log("text", text);
   vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
 
   // TODO: move cursor to end of range
   const endPosition = new Position(expandedCodeRange.end.line + 1, 0);
   const newSelection = new Selection(endPosition, endPosition);
   textEditor.selections = [newSelection];
+}
 
+export function runInferredCodeBlockAndMoveDown(): void {
+  runInferredCodeBlock();
 }
 
 function getExpandedCodeRegion(
@@ -42,13 +45,13 @@ function getExpandedCodeRegion(
 ): Range {
   // Assuming that no text is selected
   const beginRange = new Range(initialPosition, initialPosition);
-  console.log('beginRange', beginRange);
+  console.log("beginRange", beginRange);
 
   const initialIndentText = getInitialIndentText(editor, initialPosition);
-  console.log('initialIndentText', initialIndentText);
+  console.log("initialIndentText", initialIndentText);
 
   const finalRange = expandRangeDownward(editor, beginRange, initialIndentText);
-  console.log('finalRange', finalRange);
+  console.log("finalRange", finalRange);
   return finalRange;
 }
 
@@ -89,7 +92,7 @@ function expandRangeDownward(
     document.lineAt(nextLineNum).text.match(expandRegex)
   ) {
     nextLineNum += 1;
-    console.log('adding a line number')
+    console.log("adding a line number");
   }
 
   const endPosition = document.lineAt(nextLineNum + 1).range.end;
