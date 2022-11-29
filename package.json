@@ -21,11 +21,11 @@
     "commands": [
       {
         "command": "vscode-jupyter-python.run-inferred-block",
-        "title": "Run inferred code block"
+        "title": "Jupyter Python: Run inferred code block"
       },
       {
         "command": "vscode-jupyter-python.run-inferred-block-and-move-down",
-        "title": "Run inferred code block and move down"
+        "title": "Jupyter Python: Run inferred code block and move down"
       }
     ],
     "configuration": {
@@ -54,7 +54,20 @@
           "description": "If the above setting is enabled, this list will be passed to a regex. Any of these items in the list need to occur on the same intentation level as the first line. You may define your own custom elements to modify the code to your preferred behaviour. In the default setting, else, elif, except, finally, as well as all closing braces are expanded on."
         }
       }
-    }
+    },
+    "keybindings": [
+      {
+        "command": "vscode-jupyter-python.run-inferred-block",
+        "key": "ctrl+enter",
+        "mac": "cmd+enter",
+        "when": "editorTextFocus && editorLangId == python && !findInputFocussed && !replaceInputFocussed && jupyter.ownsSelection && !notebookEditorFocused"
+      },
+      {
+        "command": "vscode-jupyter-python.run-inferred-block-and-move-down",
+        "key": "shift+enter",
+        "when": "editorTextFocus && editorLangId == python && !findInputFocussed && !replaceInputFocussed && jupyter.ownsSelection && !notebookEditorFocused"
+      }
+    ]
   },
   "extensionDependencies": [
     "ms-toolsai.jupyter"
