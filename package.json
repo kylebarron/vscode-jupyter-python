@@ -67,6 +67,7 @@
     "postinstall": "npm run download-api",
     "pretest": "npm run compile",
     "test": "node ./out/test/run-test.js",
+    "unit-test": "npm run compile && mocha ./out/test/unit",
     "vscode:prepublish": "npm run compile",
     "watch": "tsc -watch -p ./"
   },
