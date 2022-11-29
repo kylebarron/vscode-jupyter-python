@@ -8,6 +8,10 @@ https://user-images.githubusercontent.com/15164633/204446417-eb9b260b-d48f-4d00-
 
 This is inspired by the [Hydrogen](https://github.com/nteract/hydrogen) and [`hydrogen-python`](https://github.com/nikitakit/hydrogen-python) extensions for [Atom](https://github.com/atom/atom/).
 
+## Install
+
+Install from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=kylebarron.vscode-jupyter-python) or search `kylebarron.vscode-jupyter-python` in the vscode extensions search bar.
+
 ## Features
 
 - Infer a logical "block" of code to be run at once, without needing to manually mark cell boundaries with `# %%`.
