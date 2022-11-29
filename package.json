@@ -2,7 +2,7 @@
   "name": "vscode-jupyter-python",
   "displayName": "vscode-jupyter-python",
   "description": "Python-specific Jupyter VSCode plugin based on https://github.com/nikitakit/hydrogen-python",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "publisher": "kylebarron",
   "repository": "https://github.com/kylebarron/vscode-jupyter-python",
   "engines": {
@@ -31,11 +31,6 @@
     "configuration": {
       "title": "vscode-jupyter-python",
       "properties": {
-        "vscode-jupyter-python.expandCode": {
-          "type": "boolean",
-          "default": "true",
-          "description": "When a line is executed without selection, when this setting is turned off execution only happens on code up that is indented compared to the current line. In python that unfortunately does not always work, because some control structures (e.g. else) continue on the same indentation level. Enabling this setting expands the executed code beyond what hydrogen suggests on the basis of the indentation level. The statements which trigger such extension can be defined below."
-        },
         "vscode-jupyter-python.expandCodeList": {
           "title": "Code to Expand",
           "type": "array",
@@ -51,7 +46,7 @@
             "\\]",
             "\\)"
           ],
-          "description": "If the above setting is enabled, this list will be passed to a regex. Any of these items in the list need to occur on the same intentation level as the first line. You may define your own custom elements to modify the code to your preferred behaviour. In the default setting, else, elif, except, finally, as well as all closing braces are expanded on."
+          "description": "This list is used to determine when code that is part of the same indentation level as the starting text should be included in the inferred block. You may define your own custom elements to modify the code to your preferred behaviour. In the default setting, else, elif, except, finally, as well as all closing braces are expanded on."
         }
       }
     },

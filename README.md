@@ -2,6 +2,8 @@
 
 Run automatically-inferred Python code blocks in Jupyter.
 
+In this example, the **only** keyboard shortcut used is <kbd>Cmd</kbd>+<kbd>Enter</kbd>:
+
 https://user-images.githubusercontent.com/15164633/204446417-eb9b260b-d48f-4d00-b313-ec203d84988f.mov
 
 This is inspired by the [Hydrogen](https://github.com/nteract/hydrogen) and [`hydrogen-python`](https://github.com/nikitakit/hydrogen-python) extensions for [Atom](https://github.com/atom/atom/).
@@ -29,7 +31,7 @@ This is inspired by the [Hydrogen](https://github.com/nteract/hydrogen) and [`hy
 
 By default there are two shortcuts defined:
 
-- <kbd>Cmd</kbd>+<kbd>Enter</kbd> or <kbd>Ctrl</kbd>+<kbd>Enter</kbd>: Run an automatically-inferred code block but don't move the cursor.
+- <kbd>Cmd</kbd>+<kbd>Enter</kbd>/<kbd>Ctrl</kbd>+<kbd>Enter</kbd>: Run an automatically-inferred code block but don't move the cursor.
 - <kbd>Shift</kbd>+<kbd>Enter</kbd>: Run an automatically-inferred code block and move the cursor down to the start of the next code block.
 
 ## Requirements
