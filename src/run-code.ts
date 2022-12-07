@@ -31,7 +31,13 @@ export function runInferredCodeBlockAndMoveDown(): void {
 
   const endPosition = new Position(expandedCodeRange.end.line + 1, 0);
   const newSelection = new Selection(endPosition, endPosition);
-  textEditor.selections = [newSelection];
+  setSelection(textEditor, newSelection);
+}
+
+/** Set selection in given text editor and scroll down */
+function setSelection(textEditor: TextEditor, selection: Selection): void {
+  textEditor.selections = [selection];
+  textEditor.revealRange(selection);
 }
 
 function _runInferredCodeBlock(textEditor: TextEditor): Range {
