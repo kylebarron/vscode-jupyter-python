@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { TextDocument, Range, Position, TextEditor, Selection } from "vscode";
+import { Range, Position, TextEditor, Selection } from "vscode";
 import { getExpandCodeList } from "./settings";
 
 export function runEntireFile() {
@@ -18,7 +18,9 @@ export function runInferredCodeBlock(): void {
     return;
   }
 
-  _runInferredCodeBlock(textEditor);
+  const expandedCodeRange = inferCodeBlock(textEditor);
+  const inferredBlockText = textEditor.document.getText(expandedCodeRange);
+  executeText(inferredBlockText);
 }
 
 export function runInferredCodeBlockAndMoveDown(): void {
@@ -27,43 +29,44 @@ export function runInferredCodeBlockAndMoveDown(): void {
     return;
   }
 
-  const expandedCodeRange = _runInferredCodeBlock(textEditor);
+  const expandedCodeRange = inferCodeBlock(textEditor);
+  const inferredBlockText = textEditor.document.getText(expandedCodeRange);
+  executeText(inferredBlockText);
 
   const endPosition = new Position(expandedCodeRange.end.line + 1, 0);
   const newSelection = new Selection(endPosition, endPosition);
-  setSelection(textEditor, newSelection);
+  setSelectionAndMoveDown(textEditor, newSelection);
+}
+
+function inferCodeBlock(textEditor: TextEditor): Range {
+  const initialSelection = textEditor.selection;
+
+  return initialSelection.isEmpty
+    ? getExpandedCodeRegion(textEditor)
+    : new Range(initialSelection.start, initialSelection.end);
 }
 
 /** Set selection in given text editor and scroll down */
-function setSelection(textEditor: TextEditor, selection: Selection): void {
+function setSelectionAndMoveDown(
+  textEditor: TextEditor,
+  selection: Selection
+): void {
   textEditor.selections = [selection];
   textEditor.revealRange(selection);
 }
 
-function _runInferredCodeBlock(textEditor: TextEditor): Range {
-  const initialCursorPosition = movePositionToStartOfLine(
-    textEditor.selection.anchor
-  );
-
-  const expandedCodeRange = getExpandedCodeRegion(
-    textEditor,
-    initialCursorPosition
-  );
-
-  const text = textEditor.document.getText(expandedCodeRange);
+function executeText(text: string): void {
   vscode.commands.executeCommand("jupyter.execSelectionInteractive", text);
-
-  return expandedCodeRange;
 }
 
 function movePositionToStartOfLine(position: Position): Position {
   return position.with(undefined, 0);
 }
 
-function getExpandedCodeRegion(
-  editor: TextEditor,
-  initialPosition: Position
-): Range {
+function getExpandedCodeRegion(editor: TextEditor): Range {
+  // When inferring an expanded code range, always start at the beginning of a line
+  const initialPosition = movePositionToStartOfLine(editor.selection.anchor);
+
   // Assuming that no text is selected
   // In practice, initialPosition here is the beginning of a line
   const beginRange = new Range(initialPosition, initialPosition);
