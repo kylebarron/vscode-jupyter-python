@@ -2,7 +2,7 @@
   "name": "vscode-jupyter-python",
   "displayName": "vscode-jupyter-python",
   "description": "Run automatically-inferred Python code blocks in Jupyter.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "publisher": "kylebarron",
   "repository": "https://github.com/kylebarron/vscode-jupyter-python",
   "engines": {

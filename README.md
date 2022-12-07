@@ -51,9 +51,3 @@ This depends on the upstream [`vscode-jupyter`](https://github.com/microsoft/vsc
 This is an early package so there are probably bugs.
 
 - [ ] Support for extending block upwards (i.e. if a decorator is on the previous line, include it in the current selection)
-
-## Release Notes
-
-## 0.1.0 - 2022-11-28
-
-Initial release.
