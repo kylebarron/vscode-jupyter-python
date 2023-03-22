@@ -24,18 +24,58 @@ export function runInferredCodeBlock(): void {
 }
 
 export function runInferredCodeBlockAndMoveDown(): void {
-  const textEditor = vscode.window.activeTextEditor;
-  if (!textEditor) {
-    return;
-  }
-
-  const expandedCodeRange = inferCodeBlock(textEditor);
-  const inferredBlockText = textEditor.document.getText(expandedCodeRange);
-  executeText(inferredBlockText);
-
-  const endPosition = new Position(expandedCodeRange.end.line + 1, 0);
-  const newSelection = new Selection(endPosition, endPosition);
-  setSelectionAndMoveDown(textEditor, newSelection);
+    const textEditor = vscode.window.activeTextEditor;
+    if (!textEditor) {
+        return;
+    }
+    const expandedCodeRange = inferCodeBlock(textEditor);
+    const inferredBlockText = textEditor.document.getText(expandedCodeRange);
+    console.log("inferredBlockText", inferredBlockText);
+    var empty_line_count = 0;
+    for(var i = expandedCodeRange.end.line; i >= expandedCodeRange.start.line; i--){
+        if(textEditor.document.lineAt(i).text.match(/^\s*$/)){
+            empty_line_count += 1;
+        }
+        else{
+            break;
+        }
+    }
+    console.log("empty_line_count", empty_line_count);
+    executeText(inferredBlockText);
+    //add a new line to the end of the code block
+    var endPosition;
+    var newSelection;
+    if(textEditor.document.lineCount <= expandedCodeRange.end.line + 1){
+        console.log("the last block")
+        if(expandedCodeRange.start.line == expandedCodeRange.end.line-empty_line_count){
+            console.log("the last block is a single line")
+            if(empty_line_count == 0){
+                console.log("need to add a new line")
+                vscode.commands.executeCommand("editor.action.insertLineAfter");
+            }
+            endPosition = new Position(expandedCodeRange.end.line + 1 - empty_line_count, 0);
+            newSelection = new Selection(endPosition, endPosition);
+            setSelectionAndMoveDown(textEditor, newSelection);
+        }
+        else{
+            console.log("the last block is a multi-line block")
+            endPosition = new Position(expandedCodeRange.end.line + 1 - empty_line_count, 0);
+            newSelection = new Selection(endPosition, endPosition);
+            setSelectionAndMoveDown(textEditor, newSelection);
+            if(empty_line_count == 0){
+                console.log("need to add a new line")
+                endPosition = new Position(expandedCodeRange.end.line + 1, 0);
+                newSelection = new Selection(endPosition, endPosition);
+                vscode.commands.executeCommand("editor.action.insertLineAfter");
+                setSelectionAndMoveDown(textEditor, newSelection);
+            }
+        }
+    } 
+    else {
+        endPosition = new Position(expandedCodeRange.end.line + 1, 0);
+        newSelection = new Selection(endPosition, endPosition);
+        setSelectionAndMoveDown(textEditor, newSelection);
+    }
 }
 
 function inferCodeBlock(textEditor: TextEditor): Range {
@@ -131,4 +171,3 @@ function expandRangeDownward(
   console.log("endRange", endRange);
   return endRange;
 }
-
